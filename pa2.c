@@ -1,5 +1,6 @@
 // Programming Assignment 2 
-// Madeline Febinger and Sarah Almeda
+// Madeline Febinger and Sarah Almeda and Spencer ?
+// Sarah edited this at 4PM on Thursday wow
 
 #include <stdio.h>
 #include <stdlib.h>
