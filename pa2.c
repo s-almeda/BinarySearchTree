@@ -219,5 +219,67 @@ int main()
 	printf("%d ", delete(l,5));
 	
 	traverse(*l);
+    
+    /* Code for parsing input- Now functional!
+     When each function is done, comment out the line that says printf("___ call goes here") thing and replace with actual function call
+     -Sarah */
+    
+    char inStr[10]; //string that holds instruction
+    char valStr[10]; //string that holds value
+    int val; //integer that holds value
+    
+    while (scanf("%s", inStr) != EOF){ //gets next instruction
+        
+        if (strncmp(inStr, "INS", 3) == 0){
+            scanf("%s", valStr);//gets value
+            val = atoi(valStr);
+            //insert(l, val);
+            printf("Insert %i Call goes here\n", val);
+        }
+        else if (strncmp(inStr, "DEL", 3) == 0){
+            fgets(valStr, 10, stdin);
+            val = atoi(valStr);
+            //delete(l, val);
+            printf("Delete %i Call goes here\n", val);
+        }
+        else if (strncmp(inStr, "SEA", 3) == 0){
+            fgets(valStr, 10, stdin);
+            val = atoi(valStr);
+            //search(*l, val);
+            printf("Search %i Call goes here\n", val);
+        }
+        else if (strncmp(inStr, "MIN", 3) == 0){
+            //getMinimum(l);
+            printf("Min Call goes here\n");
+        }
+        else if (strncmp(inStr, "MAX", 3) == 0){
+            //getMaximum(l);
+            printf("Max Call goes here\n");
+        }
+        else if (strncmp(inStr, "PRE", 3) == 0){
+            fgets(valStr, 10, stdin);
+            val = atoi(valStr);
+            //getPre(l, val);
+            printf("PRE %i Call goes here\n", val);
+        }
+        else if (strncmp(inStr, "SUC", 3) == 0){
+            fgets(valStr, 10, stdin);
+            val = atoi(valStr);
+            //getSuc(l, val);
+            printf("SUC %i Call goes here\n", val);
+        }
+         else if (strncmp(inStr, "HEI", 3) == 0){
+             //getHeight(l, val);
+             printf("HEI Call goes here\n");
+         }
+        else{
+            printf("INVALID INSTRUCTION");
+        }
+        
+        
+        
+        
+    }
+    
 	return 1;
 }
