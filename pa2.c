@@ -148,7 +148,7 @@ int delete(tree **l,int k)  // not finished, still need to add delete a node wit
 			{
 				p->right = NULL;
 			}
-			free(p);
+			free(dnode);
 			return numdeleted;
 		}
 		else
@@ -165,18 +165,26 @@ int delete(tree **l,int k)  // not finished, still need to add delete a node wit
 			tree* p = dnode->parent;
 			tree* child = dnode->right;
 
-			if (p->left == dnode)
+			if (p != NULL)
 			{
-				p->left = child;
-				child->parent = p;
+				if (p->left == dnode)
+				{
+					p->left = child;
+					child->parent = p;
+				}
+				else if (p->right == dnode)
+				{
+					p->right = child;
+					child->parent = p;
+				}	
+			
 			}
-			else if (p->right == dnode)
+			else
 			{
-				p->right = child;
-				child->parent = p;
-			}	
-			free(p);
-
+				*l = child;
+				child->parent = NULL; 
+			}
+			free(dnode);
 			return numdeleted;
 
 	}
@@ -186,18 +194,28 @@ int delete(tree **l,int k)  // not finished, still need to add delete a node wit
 		tree* p = dnode->parent;
 		tree* child = dnode->left;
 
-		if (p->left == dnode)
-		{
-			p->left = child;
-			child->parent = p;
-		}
-		else if (p->right == dnode)
-		{
-			p->right = child;
-			child->parent = p;
-		}
-		free(p);
-		return numdeleted;		
+			if (p != NULL)
+			{
+				if (p->left == dnode)
+				{
+					p->left = child;
+					child->parent = p;
+				}
+				else if (p->right == dnode)
+				{
+					p->right = child;
+					child->parent = p;
+				}	
+						
+			}
+			else
+			{
+				*l = child;
+				child->parent = NULL; 
+				
+			}
+			free(dnode);
+			return numdeleted;		
 	}
 
 	else // deleting a node with 2 children 
@@ -212,7 +230,11 @@ int delete(tree **l,int k)  // not finished, still need to add delete a node wit
 		tree* child = min->right; 
 
 		p->right = child;
-		child->parent = p;
+		if (child != NULL)
+		{
+			child->parent = p;
+		}
+		
 
 		free(min);
 		return numdeleted;
