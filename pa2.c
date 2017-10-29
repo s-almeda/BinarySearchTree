@@ -1,7 +1,6 @@
 // Programming Assignment 2 
 // Madeline Febinger and Sarah Almeda and Spencer ?
-// Sarah edited this at 4PM on Thursday wow
-// Sarah edited this again at 4:16PM
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -188,9 +187,9 @@ int delete(tree **l,int k)  // not finished, still need to add delete a node wit
 		}
 		free(p);
 		return numdeleted;		
-	}	
-
-
+	}
+    
+    return 0;
 
 }
 
@@ -200,23 +199,41 @@ void traverse(tree *l) // inorder traversal
 		{
 			return;
 		}
-		
+		printf("%d:\n ",l->key);
+        //printf("TO THE LEFT OF %d:\n ",l->key); //Use this and the printf statement below to print out the tree for testing purposes
 		traverse(l->left);
-		printf("%d ",l->key);
+        //printf("TO THE RIGHT OF %d:\n ",l->key);
 		traverse(l->right);	
 	
 	
 }
+int getHeight(tree *l) // inorder traversal
+{
+    if (l == NULL)
+    {
+        return -1;
+    }
+    if ((getHeight(l->left) + 1) > (getHeight(l->right) + 1)){
+        return (getHeight(l->left)+1);
+    }
+    else{
+        return (getHeight(l->right)+1);
+    }
+    
+    
+}
 
 int main()
 {
-	tree** l;
-	insert(l,1);
-	insert(l,5);
-	insert(l,5);
-	insert(l,6);
+    
+	tree * t; //I had to do this
+    tree ** l;
+    l = &t; //I had to do this
+    
+	//printf("%d\n", insert(l,1));
+	//printf("%d\n", insert(l,5));
 
-	printf("%d ", delete(l,5));
+	//printf("%d ", delete(l,5));
 	
 	traverse(*l);
     
@@ -234,7 +251,7 @@ int main()
             scanf("%s", valStr);//gets value
             val = atoi(valStr);
             //insert(l, val);
-            printf("Insert %i Call goes here\n", val);
+            printf("Inserted %i\n", insert(l, val));
         }
         else if (strncmp(inStr, "DEL", 3) == 0){
             fgets(valStr, 10, stdin);
@@ -269,8 +286,8 @@ int main()
             printf("SUC %i Call goes here\n", val);
         }
          else if (strncmp(inStr, "HEI", 3) == 0){
-             //getHeight(l, val);
-             printf("HEI Call goes here\n");
+             
+             printf("HEIGHT: %i\n", getHeight(*l));
          }
         else{
             printf("INVALID INSTRUCTION");
