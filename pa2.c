@@ -136,37 +136,48 @@ int delete(tree **l,int k)  // not finished, still need to add delete a node wit
 
 	if ( (dnode->left == NULL) && (dnode->right == NULL) ) // if deleting a node with no children 
 	{
-		tree *p = dnode->parent;
-		if (p->left->key == dnode->key)
+		if (dnode->parent != NULL)
 		{
-			p->left = NULL;
+			tree *p = dnode->parent;
+
+			if (p->left->key == dnode->key)
+			{
+				p->left = NULL;
+			}
+			else
+			{
+				p->right = NULL;
+			}
+			free(p);
+			return numdeleted;
 		}
 		else
 		{
-			p->right = NULL;
+			*l = NULL;
+			return numdeleted;
 		}
-		free(p);
-		return numdeleted;
+
+
 	}
 
 	if (dnode->left == NULL) // if deleting a node with only a right child
 	{
-		tree* p = dnode->parent;
-		tree* child = dnode->right;
+			tree* p = dnode->parent;
+			tree* child = dnode->right;
 
-		if (p->left == dnode)
-		{
-			p->left = child;
-			child->parent = p;
-		}
-		else if (p->right == dnode)
-		{
-			p->right = child;
-			child->parent = p;
-		}	
-		free(p);
+			if (p->left == dnode)
+			{
+				p->left = child;
+				child->parent = p;
+			}
+			else if (p->right == dnode)
+			{
+				p->right = child;
+				child->parent = p;
+			}	
+			free(p);
 
-		return numdeleted;	
+			return numdeleted;
 
 	}
 
@@ -188,6 +199,24 @@ int delete(tree **l,int k)  // not finished, still need to add delete a node wit
 		free(p);
 		return numdeleted;		
 	}
+
+	else // deleting a node with 2 children 
+	{
+		int m = getMinimum(dnode->right);
+		tree* min = searchnode(*l,m);
+
+		dnode->key = min->key;
+		dnode->count = min->count;
+
+		tree* p = min->parent;
+		tree* child = min->right; 
+
+		p->right = child;
+		child->parent = p;
+
+		free(min);
+		return numdeleted;
+	}
     
     return 0;
 
@@ -200,9 +229,9 @@ void traverse(tree *l) // inorder traversal
 			return;
 		}
 		printf("%d:\n ",l->key);
-        //printf("TO THE LEFT OF %d:\n ",l->key); //Use this and the printf statement below to print out the tree for testing purposes
+        printf("TO THE LEFT OF %d:\n ",l->key); //Use this and the printf statement below to print out the tree for testing purposes
 		traverse(l->left);
-        //printf("TO THE RIGHT OF %d:\n ",l->key);
+        printf("TO THE RIGHT OF %d:\n ",l->key);
 		traverse(l->right);	
 	
 	
@@ -344,7 +373,7 @@ int main()
 
 	//printf("%d ", delete(l,5));
 	
-	traverse(*l);
+	
     
     /* Code for parsing input- Now functional!
      When each function is done, comment out the line that says printf("___ call goes here") thing and replace with actual function call
@@ -366,7 +395,7 @@ int main()
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
             //delete(l, val);
-            printf("Delete %i Call goes here\n", val);
+            printf("Delete: %i\n", delete(l,val));
         }
         else if (strncmp(inStr, "SEA", 3) == 0){
             fgets(valStr, 10, stdin);
@@ -402,8 +431,8 @@ int main()
         
         
         
-        
     }
+    traverse(*l);
     
 	return 1;
 }
