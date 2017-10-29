@@ -226,6 +226,96 @@ int getMaximum (tree *l)
     return getMaximum(l->right);
 }
 
+int getPre(tree *l,int k)
+{
+	tree* a = searchnode(l,k);
+
+	if (a == NULL) // return -1 if there is no node with this key
+	{
+		return -1; 
+	}
+
+	if (a->left != NULL)
+	{
+		a = a->left;
+
+		while (a->right != NULL)
+		{
+			a = a->right;
+		}
+		return a->key;
+	}
+
+	tree* p = a->parent;
+
+	if (p->right == a)
+	{
+		return p->key;
+	}
+
+	if (p->left == a)
+	{
+		while (a == p->left) 
+		{
+			a = p;
+			if (p->parent == NULL)
+			{
+				return -1;
+			}
+			p = p->parent;
+		}
+		return p->key;
+		
+	}
+
+	return -1;
+}
+
+int getSuc(tree *l,int k)
+{
+	tree* a = searchnode(l,k);
+
+	if (a == NULL) // return -1 if there is no node with this key
+	{
+		return -1; 
+	}
+
+	if (a->right != NULL)
+	{
+		a = a->right;
+
+		while (a->left != NULL)
+		{
+			a = a->left;
+		}
+		return a->key;
+	}
+
+	tree* p = a->parent;
+
+	if (p->left == a)
+	{
+		return p->key;
+	}
+
+	if (p->right == a)
+	{
+		while (a == p->right) 
+		{
+			a = p;
+			if (p->parent == NULL)
+			{
+				return -1;
+			}
+			p = p->parent;
+		}
+		return p->key;
+		
+	}	
+
+	return -1;
+}
+
 int getHeight(tree *l) // inorder traversal
 {
     if (l == NULL)
@@ -293,14 +383,14 @@ int main()
         else if (strncmp(inStr, "PRE", 3) == 0){
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
-            //getPre(l, val);
-            printf("PRE %i Call goes here\n", val);
+           
+            printf("PRE: %i\n", getPre(*l, val));
         }
         else if (strncmp(inStr, "SUC", 3) == 0){
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
-            //getSuc(l, val);
-            printf("SUC %i Call goes here\n", val);
+           
+            printf("SUC: %i\n", getSuc(*l,val));
         }
          else if (strncmp(inStr, "HEI", 3) == 0){
              
