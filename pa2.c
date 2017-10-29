@@ -207,6 +207,25 @@ void traverse(tree *l) // inorder traversal
 	
 	
 }
+int getMinimum (tree *l)
+{
+    if (l->left == NULL)
+    {
+        return l->key;
+    }
+
+    return getMinimum(l->left);
+}
+int getMaximum (tree *l)
+{
+    if (l->right == NULL)
+    {
+        return l->key;
+    }
+    
+    return getMaximum(l->right);
+}
+
 int getHeight(tree *l) // inorder traversal
 {
     if (l == NULL)
@@ -226,9 +245,9 @@ int getHeight(tree *l) // inorder traversal
 int main()
 {
     
-	tree * t; //I had to do this
+	tree * t; //I had to do this to get it to work on my computer
     tree ** l;
-    l = &t; //I had to do this
+    l = &t; //this too
     
 	//printf("%d\n", insert(l,1));
 	//printf("%d\n", insert(l,5));
@@ -262,16 +281,14 @@ int main()
         else if (strncmp(inStr, "SEA", 3) == 0){
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
-            //search(*l, val);
-            printf("Search %i Call goes here\n", val);
+            
+            printf("%i\n", search(*l, val));
         }
         else if (strncmp(inStr, "MIN", 3) == 0){
-            //getMinimum(l);
-            printf("Min Call goes here\n");
+            printf("MIN: %i\n", getMinimum(*l));
         }
         else if (strncmp(inStr, "MAX", 3) == 0){
-            //getMaximum(l);
-            printf("Max Call goes here\n");
+            printf("MAX: %i\n", getMaximum(*l));
         }
         else if (strncmp(inStr, "PRE", 3) == 0){
             fgets(valStr, 10, stdin);
