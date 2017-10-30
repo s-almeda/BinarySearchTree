@@ -298,31 +298,39 @@ int getPre(tree *l,int k)
 		return a->key;
 	}
 
-	tree* p = a->parent;
-
-	if (p->right == a)
+	if (a->parent != NULL)
 	{
-		return p->key;
-	}
 
-	if (p->left == a)
-	{
-		while (a == p->left) 
+		tree* p = a->parent;
+
+		if (p->right != NULL)
 		{
-			a = p;
-			if (p->parent == NULL)
+			if (p->right == a)
 			{
-				return -1;
+				return p->key;
 			}
-			p = p->parent;
 		}
-		return p->key;
+
+
+		if (p->left == a)
+		{
+			while (a == p->left) 
+			{
+				a = p;
+				if (p->parent == NULL)
+				{
+					return -1;
+				}
+				p = p->parent;
+			}
+			return p->key;
 		
+		}
 	}
+
 
 	return -1;
 }
-
 int getSuc(tree *l,int k)
 {
 	tree* a = searchnode(l,k);
