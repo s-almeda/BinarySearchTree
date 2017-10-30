@@ -411,13 +411,13 @@ int main()
             scanf("%s", valStr);//gets value
             val = atoi(valStr);
             //insert(l, val);
-            printf("Inserted %i\n", insert(l, val));
+            printf("%i\n", insert(l, val));
         }
         else if (strncmp(inStr, "DEL", 3) == 0){
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
             //delete(l, val);
-            printf("Delete: %i\n", delete(l,val));
+            printf("%i\n", delete(l,val));
         }
         else if (strncmp(inStr, "SEA", 3) == 0){
             fgets(valStr, 10, stdin);
@@ -426,29 +426,28 @@ int main()
             printf("%i\n", search(*l, val));
         }
         else if (strncmp(inStr, "MIN", 3) == 0){
-            printf("MIN: %i\n", getMinimum(*l));
+            printf("%i\n", getMinimum(*l));
         }
         else if (strncmp(inStr, "MAX", 3) == 0){
-            printf("MAX: %i\n", getMaximum(*l));
+            printf("%i\n", getMaximum(*l));
         }
         else if (strncmp(inStr, "PRE", 3) == 0){
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
            
-            printf("PRE: %i\n", getPre(*l, val));
+            printf("%i\n", getPre(*l, val));
         }
         else if (strncmp(inStr, "SUC", 3) == 0){
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
            
-            printf("SUC: %i\n", getSuc(*l,val));
+            printf("%i\n", getSuc(*l,val));
         }
          else if (strncmp(inStr, "HEI", 3) == 0){
              
-             printf("HEIGHT: %i\n", getHeight(*l));
+             printf("%i\n", getHeight(*l));
          }
         else{
-            printf("INVALID INSTRUCTION");
         }
         
         
