@@ -83,6 +83,7 @@ int insert(tree **l, int x)
 		a = searchnode(*l,x);
 
 		a->count++;
+		return x;
 	}
 	else
 	{
