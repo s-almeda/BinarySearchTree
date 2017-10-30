@@ -252,9 +252,9 @@ void traverse(tree *l) // inorder traversal
 			return;
 		}
 		printf("%d:\n ",l->key);
-        printf("TO THE LEFT OF %d:\n ",l->key); //Use this and the printf statement below to print out the tree for testing purposes
+        //printf("TO THE LEFT OF %d:\n ",l->key); //Use this and the printf statement below to print out the tree for testing purposes
 		traverse(l->left);
-        printf("TO THE RIGHT OF %d:\n ",l->key);
+        //printf("TO THE RIGHT OF %d:\n ",l->key);
 		traverse(l->right);	
 	
 	
