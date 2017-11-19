@@ -83,6 +83,7 @@ int insert(tree **l, int x)
 		a = searchnode(*l,x);
 
 		a->count++;
+		return x;
 	}
 	else
 	{
@@ -136,37 +137,56 @@ int delete(tree **l,int k)  // not finished, still need to add delete a node wit
 
 	if ( (dnode->left == NULL) && (dnode->right == NULL) ) // if deleting a node with no children 
 	{
-		tree *p = dnode->parent;
-		if (p->left->key == dnode->key)
+		if (dnode->parent != NULL)
 		{
-			p->left = NULL;
+			tree *p = dnode->parent;
+
+			if (p->left->key == dnode->key)
+			{
+				p->left = NULL;
+			}
+			else
+			{
+				p->right = NULL;
+			}
+			free(dnode);
+			return numdeleted;
 		}
 		else
 		{
-			p->right = NULL;
+			*l = NULL;
+			return numdeleted;
 		}
-		free(p);
-		return numdeleted;
+
+
 	}
 
 	if (dnode->left == NULL) // if deleting a node with only a right child
 	{
-		tree* p = dnode->parent;
-		tree* child = dnode->right;
+			tree* p = dnode->parent;
+			tree* child = dnode->right;
 
-		if (p->left == dnode)
-		{
-			p->left = child;
-			child->parent = p;
-		}
-		else if (p->right == dnode)
-		{
-			p->right = child;
-			child->parent = p;
-		}	
-		free(p);
-
-		return numdeleted;	
+			if (p != NULL)
+			{
+				if (p->left == dnode)
+				{
+					p->left = child;
+					child->parent = p;
+				}
+				else if (p->right == dnode)
+				{
+					p->right = child;
+					child->parent = p;
+				}	
+			
+			}
+			else
+			{
+				*l = child;
+				child->parent = NULL; 
+			}
+			free(dnode);
+			return numdeleted;
 
 	}
 
@@ -175,18 +195,50 @@ int delete(tree **l,int k)  // not finished, still need to add delete a node wit
 		tree* p = dnode->parent;
 		tree* child = dnode->left;
 
-		if (p->left == dnode)
+			if (p != NULL)
+			{
+				if (p->left == dnode)
+				{
+					p->left = child;
+					child->parent = p;
+				}
+				else if (p->right == dnode)
+				{
+					p->right = child;
+					child->parent = p;
+				}	
+						
+			}
+			else
+			{
+				*l = child;
+				child->parent = NULL; 
+				
+			}
+			free(dnode);
+			return numdeleted;		
+	}
+
+	else // deleting a node with 2 children 
+	{
+		int m = getMinimum(dnode->right);
+		tree* min = searchnode(*l,m);
+
+		dnode->key = min->key;
+		dnode->count = min->count;
+
+		tree* p = min->parent;
+		tree* child = min->right; 
+
+		p->right = child;
+		if (child != NULL)
 		{
-			p->left = child;
 			child->parent = p;
 		}
-		else if (p->right == dnode)
-		{
-			p->right = child;
-			child->parent = p;
-		}
-		free(p);
-		return numdeleted;		
+		
+
+		free(min);
+		return numdeleted;
 	}
     
     return 0;
@@ -199,7 +251,7 @@ void traverse(tree *l) // inorder traversal
 		{
 			return;
 		}
-		printf("%d:\n ",l->key);
+		printf("%d\n ",l->key);
         //printf("TO THE LEFT OF %d:\n ",l->key); //Use this and the printf statement below to print out the tree for testing purposes
 		traverse(l->left);
         //printf("TO THE RIGHT OF %d:\n ",l->key);
@@ -224,6 +276,104 @@ int getMaximum (tree *l)
     }
     
     return getMaximum(l->right);
+}
+
+int getPre(tree *l,int k)
+{
+	tree* a = searchnode(l,k);
+
+	if (a == NULL) // return -1 if there is no node with this key
+	{
+		return -1; 
+	}
+
+	if (a->left != NULL)
+	{
+		a = a->left;
+
+		while (a->right != NULL)
+		{
+			a = a->right;
+		}
+		return a->key;
+	}
+
+	if (a->parent != NULL)
+	{
+
+		tree* p = a->parent;
+
+		if (p->right != NULL)
+		{
+			if (p->right == a)
+			{
+				return p->key;
+			}
+		}
+
+
+		if (p->left == a)
+		{
+			while (a == p->left) 
+			{
+				a = p;
+				if (p->parent == NULL)
+				{
+					return -1;
+				}
+				p = p->parent;
+			}
+			return p->key;
+		
+		}
+	}
+
+
+	return -1;
+}
+int getSuc(tree *l,int k)
+{
+	tree* a = searchnode(l,k);
+
+	if (a == NULL) // return -1 if there is no node with this key
+	{
+		return -1; 
+	}
+
+	if (a->right != NULL)
+	{
+		a = a->right;
+
+		while (a->left != NULL)
+		{
+			a = a->left;
+		}
+		return a->key;
+	}
+
+	tree* p = a->parent;
+
+	if (p->left == a)
+	{
+		return p->key;
+	}
+
+	if (p->right == a)
+	{
+		while (a == p->right) 
+		{
+			a = p;
+			if (p->parent == NULL)
+			{
+				return -1;
+			}
+			p = p->parent;
+		}
+		return p->key;
+		
+	}	
+
+	return -1;
 }
 
 int getHeight(tree *l) // inorder traversal
@@ -254,7 +404,7 @@ int main()
 
 	//printf("%d ", delete(l,5));
 	
-	traverse(*l);
+	
     
     /* Code for parsing input- Now functional!
      When each function is done, comment out the line that says printf("___ call goes here") thing and replace with actual function call
@@ -270,13 +420,13 @@ int main()
             scanf("%s", valStr);//gets value
             val = atoi(valStr);
             //insert(l, val);
-            printf("Inserted %i\n", insert(l, val));
+            printf("%i\n", insert(l, val));
         }
         else if (strncmp(inStr, "DEL", 3) == 0){
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
             //delete(l, val);
-            printf("Delete %i Call goes here\n", val);
+            printf("%i\n", delete(l,val));
         }
         else if (strncmp(inStr, "SEA", 3) == 0){
             fgets(valStr, 10, stdin);
@@ -285,31 +435,29 @@ int main()
             printf("%i\n", search(*l, val));
         }
         else if (strncmp(inStr, "MIN", 3) == 0){
-            printf("MIN: %i\n", getMinimum(*l));
+            printf("%i\n", getMinimum(*l));
         }
         else if (strncmp(inStr, "MAX", 3) == 0){
-            printf("MAX: %i\n", getMaximum(*l));
+            printf("%i\n", getMaximum(*l));
         }
         else if (strncmp(inStr, "PRE", 3) == 0){
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
-            //getPre(l, val);
-            printf("PRE %i Call goes here\n", val);
+           
+            printf("%i\n", getPre(*l, val));
         }
         else if (strncmp(inStr, "SUC", 3) == 0){
             fgets(valStr, 10, stdin);
             val = atoi(valStr);
-            //getSuc(l, val);
-            printf("SUC %i Call goes here\n", val);
+           
+            printf("%i\n", getSuc(*l,val));
         }
          else if (strncmp(inStr, "HEI", 3) == 0){
              
-             printf("HEIGHT: %i\n", getHeight(*l));
+             printf("%i\n", getHeight(*l));
          }
         else{
-            printf("INVALID INSTRUCTION");
         }
-        
         
         
         
